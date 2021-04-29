@@ -34,6 +34,11 @@ Followings are what we think are desirable properties for these functions to hav
     \item long term memory is retrievable by memory retrieval function
     \item memory retrieval function retrieves stored information as much as possible
 \end{itemize} 
+In a nut shell, we want the functions such that 
+\begin{equation}
+    \forall \varepsilon, || f^r(f^l(\bm{x})) - \bm{x} || < \varepsilon.
+\end{equation}
+The left hand side of the equation is just a reconstruction loss.
 
 Another thing to consider is how to combine long term memory to short term memory. 
 Humans seem to elegantly and naturally exploit these two memory to do a task. Thus, 
@@ -49,9 +54,37 @@ some criterion, is another issue to consider.
 Bunch of studies discussed how to construct parameters for to do tasks well (short term memory). 
 My aim is to elucidate an optimal structure for long term memory. 
 
+\subsection{Experience representation}
+We should also consider how to represent experience. For supervised learning, experience may be 
+a tuple of data, loss function, and algorithm. For reinforcement learning, experience may be a tuple 
+of state, action, and loss (reword) function. A formal definition of task by Finn et al. is 
+helpful to consider this issue \cite{Finn17}. 
 
+If we include loss function and algorithm in the definition of experience, it might not be 
+suitable to call $\bm{x}$ experience and $\phi$ memory, because loss function and algorithm 
+are usually included in $\phi$ and $\bm{x}$ is data.
 
+We define experience at a time $t$ as a tuple of following components:
+\begin{itemize}
+    \item observation: $\bm{s}_t \in \mathcal{S}$,
+    \item next observation: $\bm{s}_{t+1} \in \mathcal{S}$,
+    \item action: $\bm{a}_t \in \mathcal{A}$,
+\end{itemize}
+where $\mathcal{S}$ is state space and $\mathcal{A}$ is action space. 
+A state is a function from a pair of state and an action:
+\begin{equation}
+    s_t: \mathcal{S} \times \mathcal{A} \mapsto \mathcal{S}
+\end{equation}
+An action is a function from memory and state to action space:
+\begin{equation}
+    a_t: \mathcal{S} \times \Theta \mapsto \mathcal{A}
+\end{equation}
+We assume that memory consists of only short term and long term memory:
+\begin{equation}
+    \Theta = \Theta^s \cup \Theta^l, \Theta^s \cap \Theta^l = \emptyset
+\end{equation}
 
+Therefore, $\bm{x}_t = (\bm{s}_t, \bm{a}_t)$.
 
 
 

@@ -86,6 +86,85 @@ We assume that memory consists of only short term and long term memory:
 
 Therefore, $\bm{x}_t = (\bm{s}_t, \bm{a}_t)$.
 
+\section{Survey}
+\subsection{Method}
+I read survey papers such as \cite{Parisi19} and pick up the literatures I think is important. 
+
+\subsection{Human}
+Human brains is though to have complementary learning system, where hippocampus is for 
+fast learning and neocortex is for slow learning \cite{Mcclelland95}. \textit{``More specifically, the hippocampus employs
+a rapid learning rate and encodes sparse representations of events to minimize interference. Conversely, the neocortex is characterized by a slow learning rate and builds overlapping representations
+of the learned knowledge''} \cite{Parisi19}. It matters that ``the hippocampus is thought to represent experiences in pattern separated fashion, 
+whereby in the idealized case even highly similar events are allocated
+neuronal codes that are non-overlapping or orthogonal'' \cite{Kumaran16}.
+
+They do not think that 
+\textit{``the hippocampal system receives a direct copy of
+the pattern of activation distributed over the higher level regions
+of the neocortical system; instead, the neocortical representation is thought to be re-represented in a compressed format over
+a much smaller number of neurons in the hippocampal system'' }\cite{Mcclelland95}. The point is that 
+``such compression can often occur without loss of essential 
+information if there is redundancy in the neocortical representations" \cite{Mcclelland95} 
+\footnote{Why compression? How to compress information?}. They say \textit{``it (hippocampus) can be
+viewed not just as a memory store but as the teacher of the neocortical processing system''} 
+\cite{Mcclelland95}. In sum, \textit{``The temporally extended and
+graded nature of retrograde amnesia would reflect the fact that
+information initially stored in the hippocampal memory system can become incorporated into the neocortical system only
+very gradually, as a result of the small size of the changes made
+on each reinstatement''} \cite{Mcclelland95}. I think following statement crucial 
+
+\begin{quote}
+    \textit{One might then be tempted
+    to suggest that McCloskey and Cohen simply used the wrong
+    kind of representation and that the problem could be eliminated by using sparser patterns of activation with less overlap.
+    However, as French (1991) has noted, reducing overlap avoids
+    catastrophic interference at the cost of a dramatic reduction in
+    the exploitation of shared structure --- However, the existence of hippocampal amnesia, together
+    with the sketch given earlier of the possible role of the hippocampal system in learning and memory, suggests instead that
+    one might use the success of Rumelhart's (1990) simulation,
+    together with the failure of McCloskey and Cohen's (1989), as
+    the basis for understanding why there is a separate learning system in the hippocampus and why knowledge originally stored
+    in this system is incorporated in the neocortex only gradually.} \cite{Mcclelland95}    
+\end{quote}
+
+Following are particularly important answers to key questions presented in this literature
+\begin{itemize}
+    \item \textit{``The principles indicate that the hippocampus is there to provide a medium for the initial storage of memories in a form that
+    avoids interference with the knowledge already acquired in the
+    neocortical system''}
+    \item \textit{``Incorporation takes a long time to allow new knowledge to be
+    interleaved with ongoing exposure to exemplars of the existing
+    knowledge structure, so that eventually the new knowledge may
+    be incorporated into the structured system already contained
+    in the neocortex. If the changes were made rapidly, they would
+    interfere with the system of structured knowledge built up from
+    prior experience with other related material.''} \footnote{Intuitive but why?}
+\end{itemize}
+
+Following are interesting interpretation of the relation between current artificial external memory 
+and human memory system:
+\begin{quote}
+    \textit{While parallels have been drawn between the external memory of the NTM and working memory, the characteristics
+    of its external memory can easily be related to long-term memory systems as well. Indeed, content-based addressable
+    external memories of this kind share functionalities with attractor networks, an architecture often used to model the
+    computational functions performed by the CA3 subregion of the hippocampus (e.g., storage and retrieval of episodic
+    memories). There are further points of connection between the operation of the NTM and the hippocampus:
+    information is not stored and retained indiscriminately; instead it is selected based on an estimate of potential future
+    relevance (see section ‘Proposed Role for the Hippocampus in Circumventing the Statistics of the Environment’)} \cite{Kumaran16} 
+\end{quote}
+
+\subsection{Artificial neural network}
+Dual-weight learning system have fast-learning weight and slow-learning weight \cite{Hinton87}. Pseudo-rehearsal 
+does not explicitly store memory but store as probabilistic model \cite{Robins95}. Recent approach based on 
+a similar idea is deep generative replay \cite{Shin17}. Note that this approach is inspired by the 
+generative role of hippocampus not by neocortical function. Soltoggio et al. 
+proposed hypothesis testing plasticity, in which confidence of consistency of cause-effect relationships 
+determines if a memory is short-term or long-term \cite{Soltoggio15}. Lopez-Paz and Ranzato proposed 
+Gradient Episodic Memory, which impose constraint that overlap between gradient of current task and 
+old task is sufficiently large \cite{Lopez17}. Kamara et al. also model long term memory 
+as generative model \cite{Kemker17,Kemker18} 
+\footnote{Is generative model the best/only way to model long term memory? What is the functionality 
+of this model}.
 
 
 

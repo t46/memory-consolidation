@@ -153,6 +153,18 @@ and human memory system:
     relevance (see section ‘Proposed Role for the Hippocampus in Circumventing the Statistics of the Environment’)} \cite{Kumaran16} 
 \end{quote}
 
+An interesting observation on how mammalian memory mitigate catastrophic 
+forgetting:
+\begin{quote}
+    \textit{The distributed nature of neural coding can lead to interference between sensory and memory representations. 
+    Here, we show that the brain mitigates such interference by rotating sensory representations into 
+    orthogonal memory representations over time ... 
+    The transformation of sensory information into a memory was facilitated by a combination of ‘stable’ neurons, 
+    which maintained their selectivity over time, and ‘switching’ neurons, which inverted their selectivity over time. 
+    Together, these neural responses rotated the population representation, transforming sensory inputs into memory.
+    }\cite{Libby21}
+\end{quote}
+
 \subsection{Artificial neural network}
 Dual-weight learning system have fast-learning weight and slow-learning weight \cite{Hinton87}. Pseudo-rehearsal 
 does not explicitly store memory but store as probabilistic model \cite{Robins95}. Recent approach based on 
@@ -168,7 +180,7 @@ of this model}.
 
 \subsection{Deep Generative Dual Memory Network}
 Deep generative dual memory network comprises two generative models: 
-a short-term memory (STM) and a long-term memory (LTM). What I thought are 
+a short-term memory (STM) and a long-term memory (LTM) \cite{Kamra17}. What I thought are 
 following:
 \begin{itemize}
     \item As conventions, it encodes task in memory. What should I encode? Is task the best thing to encode?
@@ -178,7 +190,22 @@ following:
     \item Benchmark task is too simple and not well-motivated. 
 \end{itemize}
 
-
+\section{Notes}
+Lets's reconsider the problems of current memory system. My goal is to 
+find an answer for a good memory consolidation algorithm. To that end, 
+thinking about how to represent memory, or, what structure memory should 
+be is important. My thoughts are here:
+\begin{itemize}
+    \item Memory should encode temporal information
+    \item Memory should represents experience not task
+    \item Ideal structure for learning/inference/task solving and that for 
+          storage and retrieval is not necessarily the same; we should 
+          separate these two requirements
+    \item Memory is fragile but once consolidated, it is surprisingly robust
+    \item (Conscious) memory is ``used'' to do something new
+    \item Memory is associative
+    \item Every association should be temporal
+\end{itemize}
 
 
 

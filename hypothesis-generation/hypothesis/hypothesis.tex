@@ -166,6 +166,18 @@ as generative model \cite{Kemker17,Kemker18}
 \footnote{Is generative model the best/only way to model long term memory? What is the functionality 
 of this model}.
 
+\subsection{Deep Generative Dual Memory Network}
+Deep generative dual memory network comprises two generative models: 
+a short-term memory (STM) and a long-term memory (LTM). What I thought are 
+following:
+\begin{itemize}
+    \item As conventions, it encodes task in memory. What should I encode? Is task the best thing to encode?
+    \item Following Lopez-Paz et al. it measures performance with Average accuracy and Backward Transfer. Should I use them?
+    \item They propose a balancing algorithm between old memory and new memory. But it looks heuristic. Is there another principled way to do this?
+    \item Similarly, they propose a way to use their algorithm without task index. Is the proposed way the best way to do this?
+    \item Benchmark task is too simple and not well-motivated. 
+\end{itemize}
+
 
 
 

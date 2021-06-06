@@ -58,6 +58,56 @@ perturbation $\bm{\epsilon}$ since $\bm{\theta} \neq \bm{\theta} + \bm{\epsilon}
 we are interested in. Rather, we are interested in whether some information $f^I(\bm{\theta})$ extracted from a memory changes or not 
 by a perturbation $\bm{\epsilon}$: we say a memory is robust when $f^I(\bm{\theta}) = f^I(\bm{\theta}+ \bm{\epsilon})$.
 
-Hence, we have to define information function $f^I: \Theta \to \mathbb{R}^d$. 
+Hence, we have to define information function $f^I: \Theta \mapsto \mathbb{R}^d$. I do not introduce heuristics here. 
+This is because I think that ``useful'' information depends on internal and external states. So, I consider 
+the information function as a parametrized function. The next thing to consider is how to modify the parameters of 
+the information function. In conventional reinforcement learning, this is done by maximizing an expected cumulative reward or 
+some intrinsic reward. I also believe that modification is done by minimizing some energy. However, we believe that 
+energy function is not static but dynamic in that it keeps changing by the internal and external states. 
+I borrow the idea from neuroscience that the brain is predictive machine. So, I decide to define the energy as the 
+ multi-scale prediction error. This belief is based on several previous works \cite{Schmidhuber10,Friston10,Hawkings04}. 
+ I consider two kind of predictions: one is the prediction on the external state and another is that on the internal state. 
+ The former tries to minimize the error between its predictive next external state and the actual next external state. 
+ The later minimizes the error between its internal state before and after the perturbation. If you consider multi-scale hierarchical 
+ architecture to the internal state, these two predictions are continuously connected. In addition to these predictions, you can also consider 
+ conventional external reward. Both predictions are functions of external state and internal states
+ \begin{equation}
+     f^{ex}(\bm{x}, f^I(\bm{\theta})): \mathcal{X} \times \mathbb{R}^d \mapsto \mathcal{X}, \ \ f^{in}(\bm{x}, f^I(\bm{\theta})): \mathcal{X} \times \mathbb{R}^d \mapsto \mathbb{R}^d,
+ \end{equation}
+ The energy is the function of prediction and the next internal/external state.
+ \begin{equation}
+     E^{ex}(f^{ex, t}, \bm{x}^{t + 1}): \mathcal{X} \times \mathcal{X} \mapsto \mathbb{R}, \ \ E^{in}(f^{in, t}, f^{in, t + 1}): \mathbb{R}^d \times \mathbb{R}^d \mapsto \mathbb{R}
+ \end{equation}
+
+ Now I return to the discussion on robustness. Internal state $\bm{\theta}$ is modified so that it minimizes the 
+ energies $E^{ex}$ and $E^{in}$. If this modification $\bm{\epsilon}$ satisfies $f^I(\bm{\theta}) = f^I(\bm{\theta}+ \bm{\epsilon})$, 
+ we say that the memory is robust. Minimizing $E^{in}$ can help memory to be robust but minimizing $E^{ex}$ could 
+ hurt robustness.
+
+ \section{Note on Robustness}
+ I cannot control the external state (though I can to some extent by active inference \cite{Friston10}). 
+ I think there are three ways to install the robustness to the network $\bm{\theta}$. 
+ 
+ The first one is changing the way to update $\bm{\theta}$. This is a mainstream in the continual learning literature \cite{Kirkpatrick17,Shin17}. 
+ This approach encompasses any approach that modifies the update function $f^u(\bm{\theta}^t, \bm{\epsilon}^t) = \bm{\theta}^{t + 1}$.
+
+ The second one is introducing the different structure to $\bm{\theta}$. Each element $\theta_i$ of the parameter $\bm{\theta}$ is related each other. 
+ This structure can  be mathematical structure like, metric, order, etc. Also, this structure can be, say 
+ feed forward, recurrent, convolution, Hopfield and so on. This structure has influences on the robustness of 
+ the memory. The mainstream of the researches on neural network architectures study a good architecture to solve 
+ a particular task. In the similar vein, we can consider a good architecture, given a information function $f^I$. 
+ For example, if the network has hidden layer, the output of the function is not differentiated by a change in $\bm{\theta}$ \cite{Watanabe09,Amari06}.
+
+ The third one is considering the different $f^I$. As is evident from the definition of the robustness, whether a memory $\bm{\theta}$ 
+ is robust or not depends on $f^I$. Thus, even if a memory is not robust for a function $f^I$, it could be robust for another 
+ function $f^{I'}$. In other words, we can consider a way to extract information from $\bm{\theta}$ that is not affected so much by 
+ a change in $\bm{\theta}$.
+
+
+
+
+
+\bibliography{ref}
+\bibliographystyle{unsrt}
 
 \end{document}

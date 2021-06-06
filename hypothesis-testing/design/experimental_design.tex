@@ -35,7 +35,7 @@ I will study if this hypothesis is valid or not. To evaluate the hypothesis abov
     \item design experiments which reflect all the requirements above
 \end{itemize}
 
-\section{Generality of Memory}
+\subsection{Generality of Memory}
 Our daily experience is just a set of sensory information and the reaction of our internal state to them. 
 However, our memory (especially episodic memory) does not seem to be in such a form. Rather, it is like, say 
 ``I saw a cat yesterday''. This is symbolic and far away from just a collection of sensory inputs. Although 
@@ -51,7 +51,7 @@ A further indirect measure of the generality of a memory is to measure the gener
 This is because a general memory can help agents to solve more tasks. This measurement is task-specific and is limited to 
 reinforcement learning but common and interpretable.
 
-\section{Robustness of memory}
+\subsection{Robustness of memory}
 I say a memory is robust when the memory is hard to be forgotten. In hypothesis.tex, I define memory as 
 $\bm{\theta} \in \Theta \subset \mathbb{R}^p$. In that sense, every memory changes even by a small bit of 
 perturbation $\bm{\epsilon}$ since $\bm{\theta} \neq \bm{\theta} + \bm{\epsilon}$. This is not the memory 
@@ -84,7 +84,7 @@ I borrow the idea from neuroscience that the brain is predictive machine. So, I 
  we say that the memory is robust. Minimizing $E^{in}$ can help memory to be robust but minimizing $E^{ex}$ could 
  hurt robustness.
 
- \section{Note on Robustness}
+ \subsection{Note on Robustness}
  I cannot control the external state (though I can to some extent by active inference \cite{Friston10}). 
  I think there are three ways to install the robustness to the network $\bm{\theta}$. 
  
@@ -102,6 +102,12 @@ I borrow the idea from neuroscience that the brain is predictive machine. So, I 
  is robust or not depends on $f^I$. Thus, even if a memory is not robust for a function $f^I$, it could be robust for another 
  function $f^{I'}$. In other words, we can consider a way to extract information from $\bm{\theta}$ that is not affected so much by 
  a change in $\bm{\theta}$.
+
+ \subsection{Design Temporal Coding}
+ Any biological activity is temporal. I hypothesize that preserving the temporal information enhances the robustness 
+ of the memory. This hypothesis comes from my intuition that preserving temporal information is just adding an additional 
+ dimension in the encoding space. If you preserve the information when the signal comes into, you can expect interference 
+ by adding memories will be mitigated.
 
 
 

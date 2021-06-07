@@ -103,14 +103,34 @@ I borrow the idea from neuroscience that the brain is predictive machine. So, I 
  function $f^{I'}$. In other words, we can consider a way to extract information from $\bm{\theta}$ that is not affected so much by 
  a change in $\bm{\theta}$.
 
- \subsection{Design Temporal Coding}
+ \subsection{Design Temporal Information Coding}
  Any biological activity is temporal. I hypothesize that preserving the temporal information enhances the robustness 
  of the memory. This hypothesis comes from my intuition that preserving temporal information is just adding an additional 
- dimension in the encoding space. If you preserve the information when the signal comes into, you can expect interference 
- by adding memories will be mitigated.
+ dimension in the encoding space. If you preserve the information when the signal comes into, you can expect 
+ that the interference by adding memories will be mitigated. 
 
+Thus, I generalize the information and I formalize the information as follows:
+\begin{equation}
+    f^{I, t} = f^{I, t}(\bm{\theta}^t, \bm{\theta}^{t - 1}, ..., \bm{\theta}^{0})
+\end{equation}
+By construction, this is obviously more robust than non-temporal one. This is not what I am interested in.
 
+It matters to note that the information coming into brain is continuous. 
+Every single just a moment is a tiny fraction of instant event. What I call 
+``event'' is the accumulations of these continuous sequential signals. 
+Thus, if I consider an event $\bm{x}$ is such millisecond scale phenomenon, 
+we should consider a set of events $\{ \bm{x}^{s} \}_{s=t,...,t+\tau}$ as a meaningful ``event''.
+Also, we can think that neural states encode meaningful something when we thinks it as 
+a sequences $\{ \bm{\theta}^{s} \}_{s=t,...,t+\tau}$. Slightly abusing the notation, 
+we consider this information as follows:
+\begin{equation}
+    f^{I, t, ..., t + \tau} = f^{I, t, ..., t + \tau}(\bm{\theta}^t, ..., \bm{\theta}^{t + \tau})
+\end{equation}
+Although, I think the information of a snapshot $f^{I, t}$ is not necessarily semantically the same as 
+that of sequential states $f^{I, t, ..., t + \tau}$, I use this notation for simplicity. 
 
+I will reconsider what information I represent by $f^{I, t}$ and $f^{I, t, ..., t + \tau}$, respectively, 
+after considering the remaining issues.
 
 
 \bibliography{ref}

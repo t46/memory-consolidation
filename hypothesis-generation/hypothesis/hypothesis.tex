@@ -294,6 +294,174 @@ chunks of memories not to attend to the raw memory. I think it matters to consid
     \end{itemize}    
 \end{itemize}
 
+\section{Breakdown Hypothesis}
+My hypothesis is that
+\begin{itemize}
+    \item I can transform the task-specific short-term memory to general and robust memory if I
+    \begin{itemize}
+        \item encode temporal information
+        \item enforce agents not to use long-term memory directly
+        \item protect long-term memory by changing network
+    \end{itemize}
+\end{itemize}
+And, I expect that language manipulation may help to preserve the long-term memory.
+
+I will study if this hypothesis is valid or not. To evaluate the hypothesis above, I have to 
+\begin{itemize}
+    \item measure the generality of the memory
+    \item measure the robustness of the memory
+    \item design a way to encode temporal information
+    \item design a way to construct abstract semantics and relation by memory
+    \item design a way to have agents to use that information
+    \item design a way to change network to protect memory
+    \item study the influence of the factors above on these measure
+    \item design experiments which reflect all the requirements above
+\end{itemize}
+
+\subsection{Generality of Memory}
+Our daily experience is just a set of sensory information and the reaction of our internal state to them. 
+However, our memory (especially episodic memory) does not seem to be in such a form. Rather, it is like, say 
+``I saw a cat yesterday''. This is symbolic and far away from just a collection of sensory inputs. Although 
+memory itself is not purely symbolic, it is tightly connected with abstract interpretation of its raw experience.
+I call this kind of memory general in that the memory is not unique to a specific memory.
+
+Therefore, it is difficult to directly measure the absolute generality of a memory. Instead, I measure the 
+generality indirectly. I hypothesize that a general memory is easier to be ``used'' in more experiences. In other 
+words, it has more similarity/overlap with various experiences. We can measure ``how many times a memory is used for other experiences'' 
+or ``how many similar memories it has''.
+
+A further indirect measure of the generality of a memory is to measure the generalization of a reinforcement learning agents. 
+This is because a general memory can help agents to solve more tasks. This measurement is task-specific and is limited to 
+reinforcement learning but common and interpretable.
+
+\subsection{Robustness of memory}
+I say a memory is robust when the memory is hard to be forgotten. In hypothesis.tex, I define memory as 
+$\bm{\theta} \in \Theta \subset \mathbb{R}^p$. In that sense, every memory changes even by a small bit of 
+perturbation $\bm{\epsilon}$ since $\bm{\theta} \neq \bm{\theta} + \bm{\epsilon}$. This is not the memory 
+we are interested in. Rather, we are interested in whether some information $f^I(\bm{\theta})$ extracted from a memory changes or not 
+by a perturbation $\bm{\epsilon}$: we say a memory is robust when $f^I(\bm{\theta}) = f^I(\bm{\theta}+ \bm{\epsilon})$.
+
+Hence, we have to define information function $f^I: \Theta \mapsto \mathbb{R}^d$. I do not introduce heuristics here. 
+This is because I think that ``useful'' information depends on internal and external states. So, I consider 
+the information function as a parametrized function. The next thing to consider is how to modify the parameters of 
+the information function. In conventional reinforcement learning, this is done by maximizing an expected cumulative reward or 
+some intrinsic reward. I also believe that modification is done by minimizing some energy. However, we believe that 
+energy function is not static but dynamic in that it keeps changing by the internal and external states. 
+I borrow the idea from neuroscience that the brain is predictive machine. So, I decide to define the energy as the 
+ multi-scale prediction error. This belief is based on several previous works \cite{Schmidhuber10,Friston10,Hawkings04}. 
+ I consider two kind of predictions: one is the prediction on the external state and another is that on the internal state. 
+ The former tries to minimize the error between its predictive next external state and the actual next external state. 
+ The later minimizes the error between its internal state before and after the perturbation. If you consider multi-scale hierarchical 
+ architecture to the internal state, these two predictions are continuously connected. In addition to these predictions, you can also consider 
+ conventional external reward. Both predictions are functions of external state and internal states
+ \begin{equation}
+     f^{ex}(\bm{x}, f^I(\bm{\theta})): \mathcal{X} \times \mathbb{R}^d \mapsto \mathcal{X}, \ \ f^{in}(\bm{x}, f^I(\bm{\theta})): \mathcal{X} \times \mathbb{R}^d \mapsto \mathbb{R}^d,
+ \end{equation}
+ The energy is the function of prediction and the next internal/external state.
+ \begin{equation}
+     E^{ex}(f^{ex, t}, \bm{x}^{t + 1}): \mathcal{X} \times \mathcal{X} \mapsto \mathbb{R}, \ \ E^{in}(f^{in, t}, f^{in, t + 1}): \mathbb{R}^d \times \mathbb{R}^d \mapsto \mathbb{R}
+ \end{equation}
+
+ Now I return to the discussion on robustness. Internal state $\bm{\theta}$ is modified so that it minimizes the 
+ energies $E^{ex}$ and $E^{in}$. If this modification $\bm{\epsilon}$ satisfies $f^I(\bm{\theta}) = f^I(\bm{\theta}+ \bm{\epsilon})$, 
+ we say that the memory is robust. Minimizing $E^{in}$ can help memory to be robust but minimizing $E^{ex}$ could 
+ hurt robustness.
+
+ \subsection{Note on Robustness}
+ I cannot control the external state (though I can to some extent by active inference \cite{Friston10}). 
+ I think there are three ways to install the robustness to the network $\bm{\theta}$. 
+ 
+ The first one is changing the way to update $\bm{\theta}$. This is a mainstream in the continual learning literature \cite{Kirkpatrick17,Shin17}. 
+ This approach encompasses any approach that modifies the update function $f^u(\bm{\theta}^t, \bm{\epsilon}^t) = \bm{\theta}^{t + 1}$.
+
+ The second one is introducing the different structure to $\bm{\theta}$. Each element $\theta_i$ of the parameter $\bm{\theta}$ is related each other. 
+ This structure can  be mathematical structure like, metric, order, etc. Also, this structure can be, say 
+ feed forward, recurrent, convolution, Hopfield and so on. This structure has influences on the robustness of 
+ the memory. The mainstream of the researches on neural network architectures study a good architecture to solve 
+ a particular task. In the similar vein, we can consider a good architecture, given a information function $f^I$. 
+ For example, if the network has hidden layer, the output of the function is not differentiated by a change in $\bm{\theta}$ \cite{Watanabe09,Amari06}.
+
+ The third one is considering the different $f^I$. As is evident from the definition of the robustness, whether a memory $\bm{\theta}$ 
+ is robust or not depends on $f^I$. Thus, even if a memory is not robust for a function $f^I$, it could be robust for another 
+ function $f^{I'}$. In other words, we can consider a way to extract information from $\bm{\theta}$ that is not affected so much by 
+ a change in $\bm{\theta}$.
+
+ \subsection{Design Temporal Information Coding}
+ Any biological activity is temporal. I hypothesize that preserving the temporal information enhances the robustness 
+ of the memory. This hypothesis comes from my intuition that preserving temporal information is just adding an additional 
+ dimension in the encoding space. If you preserve the information when the signal comes into, you can expect 
+ that the interference by adding memories will be mitigated. 
+
+Thus, I generalize the information and I formalize the information as follows:
+\begin{equation}
+    f^{I, t} = f^{I, t}(\bm{\theta}^t, \bm{\theta}^{t - 1}, ..., \bm{\theta}^{0})
+\end{equation}
+By construction, this is obviously more robust than non-temporal one. This is not what I am interested in.
+
+It matters to note that the information coming into brain is continuous. 
+Every single just a moment is a tiny fraction of instant event. What I call 
+``event'' is the accumulations of these continuous sequential signals. 
+Thus, if I consider an event $\bm{x}$ is such millisecond scale phenomenon, 
+we should consider a set of events $\{ \bm{x}^{s} \}_{s=t,...,t+\tau}$ as a meaningful ``event''.
+Also, we can think that neural states encode meaningful something when we thinks it as 
+a sequences $\{ \bm{\theta}^{s} \}_{s=t,...,t+\tau}$. Slightly abusing the notation, 
+we consider this information as follows:
+\begin{equation}
+    f^{I, t, ..., t + \tau} = f^{I, t, ..., t + \tau}(\bm{\theta}^t, ..., \bm{\theta}^{t + \tau})
+\end{equation}
+Although, I think the information of a snapshot $f^{I, t}$ is not necessarily semantically the same as 
+that of sequential states $f^{I, t, ..., t + \tau}$, I use this notation for simplicity. 
+
+I will reconsider what information I represent by $f^{I, t}$ and $f^{I, t, ..., t + \tau}$, respectively, 
+after considering the remaining issues.
+
+\subsection{Design Semantics/Relation Representation}
+Human understand a notion of ``research'' and know that it includes ``science'', for example. 
+Or, we can use a more abstract notion of ``object'' and apply an ``operation'' on it. Human beings 
+seem to excel at these symbolic manipulation. I believe that memory is ``used'' for these operations. 
+Abstract semantics is subset of information $f^I$: $f^{sem}$. The relation between the semantics 
+is a function of multiple semantics: $f^{rel} = f^{rel}(f^I \times ... \times f^{I'})$. 
+I support the view that the semantics of neural representation is designed through the culture 
+the agent is in \cite{Santoro21}. Repeated activations of neurons constructs an abstract concept 
+and the symbols are attached to these concepts and segments the neural representation space. 
+Thus, the abstract concept is formed through energy minimization above and semantics is grounded to these 
+abstract through social interactions. I hypothesize that human attach the symbol because it 
+improves the predictability of internal and external states. In other words, we do so 
+because it is useful. I think that the relation is also formed through this process.
+
+With regards to the operation, I think that symbolic operation is a generalization 
+of the physical action in neural representation space. When we move a cup, the cup will change 
+it position after the action. In the similar vein, we act on a symbol and produce another symbol. 
+Planning, making a hypothesis, proving a proposition, all of these mental actions can be 
+regarded as like this. I find a book that presents a similar idea a bit \cite{Hawkins21}. 
+I also think that symbolic operation occurs just because it is ``useful''.
+
+\subsection{Design information usage scheme}
+I said agents use semantics and relations because it is ``useful''. So, I have to clarify what 
+I mean by ``useful''. What is the situation where agents do not directly use the raw memory $\bm{\theta}$ but 
+uses its information $f^I(\bm{\theta})$. If the goal is not remembering or dealing with a particular situation, 
+agents do not have to remember the experience the same as that when it was stored. If agents have to face various 
+situation, it is better to use the abstract representation as well. Also, 
+when agents are required to quickly adapt to the situation and extracting the raw memory 
+takes cost, using accumulated information could be better.
+
+\subsection{Design structural change for memory protection}
+Neuron strengthens its synaptic connection by two ways: chemical reaction and gene expression. 
+The former is needed for the short term memory and the later is needed for the long term memory. 
+I do not think that I have to design a biologically plausible memory mechanism for my purpose
+but I could use multiple mechanisms to form a memory. 
+% Does neuron minimize prediction error even at neuronal scale?
+% What is the benefit of the local update?
+In the brain, new synapse is generated if the information is worth storing as a long-term memory. 
+But increasing synapses infinitely is not plausible. Natural solution to this will be 
+the occasional pruning unnecessary synapse. I still have no idea on what is the optimal 
+adding/pruning ratio, timing, and amount. The efficiency of this scheme tightly depends on how 
+a neuron assembly represents memories. 
+
+\section{Rethinking hypotheses}
+I found it messy to tackle all the hypotheses I proposed above at the same time. Thus, I will 
+rethink the hypothesis and define the hypothesis I will focus on.
+
 \bibliography{ref}
 \bibliographystyle{plain}
 
